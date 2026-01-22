@@ -10,9 +10,9 @@ const box = 20;
 
 // variabili gioco
 let snake = [];
-let direction;
-let food;
-let score = 0;
+let direzione;
+let cibo;
+let punteggio = 0;
 let game;
 let running = false;
 
@@ -25,14 +25,14 @@ document.addEventListener("keydown", function(e){
 });
 
 // frecce per direzione
-document.addEventListener("keydown", changeDirection);
+document.addEventListener("keydown", changedirezione);
 
 // funzione per iniziare partita
 function startGame(){
   if(running) return; // se già partita esco
   running = true;
-  score = 0;
-  direction = "RIGHT";
+  punteggio = 0;
+  direzione = "RIGHT";
 
   // snake parte con 2 pezzi
   snake = [
@@ -41,20 +41,20 @@ function startGame(){
   ];
 
   // creo cibo
-  food = randomFood();
+  cibo = randomcibo();
 
   // aggiorno punteggio
-  document.getElementById("score").innerText = score;
+  document.getElementById("punteggio").innerText = punteggio;
 
   // disegno subito serpente e cibo
   draw();
 
   // avvio loop di gioco ogni 100ms
-  game = setInterval(draw, 100);
+  gioco= setInterval(draw, 100);
 }
 
 // genera cibo casuale
-function randomFood(){
+function randomcibo(){
   return {
     x: Math.floor(Math.random() * (canvas.width / box)) * box,
     y: Math.floor(Math.random() * (canvas.height / box)) * box
@@ -62,11 +62,11 @@ function randomFood(){
 }
 
 // cambia direzione con frecce
-function changeDirection(e){
-  if(e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
-  if(e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
-  if(e.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
-  if(e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+function changedirezione(e){
+  if(e.key === "ArrowLeft" && direzione !== "RIGHT") direzione = "LEFT";
+  if(e.key === "ArrowUp" && direzione !== "DOWN") direzione = "UP";
+  if(e.key === "ArrowRight" && direzione !== "LEFT") direzione = "RIGHT";
+  if(e.key === "ArrowDown" && direzione !== "UP") direzione = "DOWN";
 }
 
 // funzione principale del gioco
@@ -77,7 +77,7 @@ function draw(){
 
   // disegno cibo
   ctx.fillStyle = "red";
-  ctx.fillRect(food.x, food.y, box, box);
+  ctx.fillRect(cibo.x, cibo.y, box, box);
 
   // disegno serpente
   ctx.fillStyle = "lime";
@@ -89,16 +89,16 @@ function draw(){
   let headX = snake[0].x;
   let headY = snake[0].y;
 
-  if(direction === "LEFT") headX -= box;
-  if(direction === "UP") headY -= box;
-  if(direction === "RIGHT") headX += box;
-  if(direction === "DOWN") headY += box;
+  if(direzione === "LEFT") headX -= box;
+  if(direzione === "UP") headY -= box;
+  if(direzione === "RIGHT") headX += box;
+  if(direzione === "DOWN") headY += box;
 
   // se mangia cibo
-  if(headX === food.x && headY === food.y){
-    score++;
-    document.getElementById("score").innerText = score;
-    food = randomFood();
+  if(headX === cibo.x && headY === cibo.y){
+    punteggio++;
+    document.getElementById("punteggio").innerText = punteggio;
+    cibo = randomcibo();
   } else {
     snake.pop(); // tolgo coda
   }
@@ -124,6 +124,6 @@ function draw(){
 // fine partita
 function gameOver(){
   clearInterval(game);
-  alert("Game Over! Punteggio: " + score);
+  alert("giocoOver! Punteggio: " + punteggio);
   running = false;
 }
